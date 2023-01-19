@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +21,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtUtil implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private static final long JWT_TOKEN_VALIDITY = 5*24*60*60;
+	private static final long JWT_TOKEN_VALIDITY = 60*60;
 	
 	@Value("${jwt.secret}")
 	private String secret;
@@ -59,15 +60,14 @@ public class JwtUtil implements Serializable {
     }
 
     public String generateToken(User user) {
-        return doGenerateToken(user.getUsername());
+    	Map<String, Object> claims = new HashMap<>();
+    	claims.put("authorities", user.getAuthorities().stream().map((auth)-> auth.getAuthority()).collect(Collectors.toList()));
+        return doGenerateToken(user.getUsername(), claims);
     }
 
-    private String doGenerateToken(String subject) {
+    private String doGenerateToken(String subject, Map<String, Object> claims) {
 
-//        Claims claims = Jwts.claims().setSubject(subject);
-//        claims.put("scopes", Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
 
-        Map<String, Object> claims = new HashMap<>();
     	return Jwts.builder()
                 .setClaims(claims).setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))

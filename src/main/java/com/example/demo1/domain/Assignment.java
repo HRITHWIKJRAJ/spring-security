@@ -10,12 +10,17 @@ import jakarta.persistence.ManyToOne;
 public class Assignment {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private Integer number;
 	private String status;
 	private String githubUrl;
 	private String Branch;
 	private String codeReviewVideoUrl;
+	
 	@ManyToOne(optional = false)
 	private User user;
+	
+	@ManyToOne
+	private User codeReviewer;
 	
 	
 	public Long getId() {
@@ -23,6 +28,12 @@ public class Assignment {
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public Integer getNumber() {
+		return number;
+	}
+	public void setNumber(Integer number) {
+		this.number = number;
 	}
 	public String getStatus() {
 		return status;
@@ -48,11 +59,17 @@ public class Assignment {
 	public void setCodeReviewVideoUrl(String codeReviewVideoUrl) {
 		this.codeReviewVideoUrl = codeReviewVideoUrl;
 	}
-	public User getAssignedTo() {
+	public User getUser() {
 		return user;
 	}
-	public void setAssignedTo(User user) {
+	public void setUser(User user) {
 		this.user = user;
+	}
+	public User getCodeReviewer() {
+		return codeReviewer;
+	}
+	public void setCodeReviewer(User codeReviewer) {
+		this.codeReviewer = codeReviewer;
 	}
 
 }

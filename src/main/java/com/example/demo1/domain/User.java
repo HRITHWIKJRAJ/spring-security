@@ -8,10 +8,14 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,11 +26,23 @@ public class User implements UserDetails {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private String name;
 	private LocalDate cohortStartDate;
 	private String username;
+	@JsonIgnore
 	private String password;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+	@JsonIgnore
+	private List<Authority> authorities = new ArrayList<>();
 	
 	
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -53,10 +69,10 @@ public class User implements UserDetails {
 	}
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-
-		List<GrantedAuthority> roles = new ArrayList<>();
-		roles.add(new Authority("ROLE_STUDENT"));
-		return roles;
+		return authorities;
+	}
+	public void setAuthorities(List<Authority> authorities) {
+		this.authorities = authorities;
 	}
 	@Override
 	public boolean isAccountNonExpired() {
