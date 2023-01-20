@@ -56,7 +56,7 @@ const ReviewerAssignmentView = () => {
   useEffect(() => {
     sendRequest(`/api/assignments/${assignmentId}`, "GET", user.jwt).then(
       (assignmentResponse) => {
-        let assignmentData = assignmentResponse.assignment;
+        let assignmentData = assignmentResponse.assignments[0];
         if (assignmentData.branch === null) assignmentData.branch = "";
         if (assignmentData.githubUrl === null) assignmentData.githubUrl = "";
         if (assignmentData.codeReviewVideoUrl === null)
@@ -86,7 +86,11 @@ const ReviewerAssignmentView = () => {
         </Row>
         <Row className="d-flex align-items-center">
           <Col>
-            <h1>Assignment {assignmentId}</h1>
+            <h1>
+              {assignmentEnums.length > 0
+                ? assignmentEnums[assignment.number - 1].assignmentName
+                : ""}
+            </h1>
           </Col>
           <Col>
             <StatusBadge text={assignment.status} />

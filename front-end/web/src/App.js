@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import ReviewerDashboard from "./ReviewerDashboard/reviewerDashboard";
 import ReviewerAssignmentView from "./ReviewerAssignmentView/reviewerAssignmentView";
 import { useUser } from "./UserProvider/userProvider";
+import Register from "./Register/register";
 
 function App() {
   const user = useUser();
@@ -30,6 +31,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route
         path="/assignments/:id"
         element={

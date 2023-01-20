@@ -40,7 +40,7 @@ public class AssignmentController {
 	@GetMapping("")
 	public ResponseEntity<?> getAssignments(@AuthenticationPrincipal User user) {
 		Set<Assignment> assignments = assignmentService.getAllAssignments(user);
-		return ResponseEntity.ok(assignments);
+		return ResponseEntity.ok(new AssignmentResponseDto( assignments ));
 	}
 	
 	@GetMapping("{assignmentId}")

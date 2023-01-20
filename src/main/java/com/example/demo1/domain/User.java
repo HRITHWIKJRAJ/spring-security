@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -28,6 +29,7 @@ public class User implements UserDetails {
 	private Long id;
 	private String name;
 	private LocalDate cohortStartDate;
+	@Column(unique = true)
 	private String username;
 	@JsonIgnore
 	private String password;

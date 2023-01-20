@@ -1,22 +1,29 @@
 package com.example.demo1.dto;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.example.demo1.domain.Assignment;
 import com.example.demo1.enums.AssignmentEnum;
 import com.example.demo1.enums.AssignmentStatusEnum;
 
 public class AssignmentResponseDto {
 	
-	private Assignment  assignment;
+	private Set<Assignment>  assignments = new HashSet<>();
 	private AssignmentEnum[] assignmentEnums = AssignmentEnum.values();
 	private AssignmentStatusEnum[] assignmentStatusEnums = AssignmentStatusEnum.values();
 	
 	public AssignmentResponseDto(Assignment assignment) {
 		super();
-		this.assignment = assignment;
+		this.assignments.add(assignment);
+	}
+	public AssignmentResponseDto(Set<Assignment> assignments) {
+		super();
+		this.assignments = assignments;
 	}
 	
-	public Assignment getAssignment() {
-		return assignment;
+	public Set<Assignment> getAssignments() {
+		return assignments;
 	}
 	public AssignmentEnum[] getAssignmentEnums() {
 		return assignmentEnums;

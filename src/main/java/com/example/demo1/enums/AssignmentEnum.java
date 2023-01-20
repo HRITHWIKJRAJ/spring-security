@@ -8,7 +8,8 @@ public enum AssignmentEnum {
 	ASSIGNMENT_2(2,"SPRING"),
 	ASSIGNMENT_3(3,"REACT"),
 	ASSIGNMENT_4(4,"JAVA"),
-	ASSIGNMENT_5(5,"CSS");
+	ASSIGNMENT_5(5,"CSS"),
+	ASSIGNMENT_6(5,"SQL");
 	
 	private int assignmentNum;
 	private String assignmentName;

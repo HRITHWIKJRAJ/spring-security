@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Button,
   ButtonGroup,
   Col,
@@ -20,6 +21,7 @@ const AssignmentView = () => {
   const navigate = useNavigate();
   const assignmentId = window.location.href.split("/assignments/")[1];
   const [assignmentEnums, setAssignmentEnums] = useState([]);
+  const [show, setShow] = useState(false);
   const [assignmentStatuses, setAssignmentStatuses] = useState([]);
   const [assignment, setAssignment] = useState({
     branch: "",
@@ -50,6 +52,12 @@ const AssignmentView = () => {
       assignment
     ).then((assignmentData) => {
       setAssignment(assignmentData);
+      setShow(true);
+      const timer = setTimeout(() => {
+        console.log("timer called");
+        setShow(false);
+      }, 1500);
+      return () => clearTimeout(timer);
     });
   }
 
@@ -64,7 +72,7 @@ const AssignmentView = () => {
   useEffect(() => {
     sendRequest(`/api/assignments/${assignmentId}`, "GET", user.jwt).then(
       (assignmentResponse) => {
-        let assignmentData = assignmentResponse.assignment;
+        let assignmentData = assignmentResponse.assignments[0];
         if (assignmentData.branch === null) assignmentData.branch = "";
         if (assignmentData.githubUrl === null) assignmentData.githubUrl = "";
         setAssignment(assignmentData);
@@ -92,7 +100,11 @@ const AssignmentView = () => {
         </Row>
         <Row className="d-flex align-items-center">
           <Col>
-            <h1>Assignment {assignmentId}</h1>
+            <h1>
+              {assignmentEnums.length > 0
+                ? assignmentEnums[assignment.number - 1].assignmentName
+                : ""}
+            </h1>
           </Col>
           <Col>
             <StatusBadge text={assignment.status} />
@@ -112,7 +124,7 @@ const AssignmentView = () => {
                 <Col sm="9" md="8" lg="6">
                   <DropdownButton
                     as={ButtonGroup}
-                    id="assignmentName"
+                    id="assignmentNumber"
                     variant={"info"}
                     title={
                       assignment.number
@@ -249,6 +261,13 @@ const AssignmentView = () => {
             <></>
           )}
         </div>
+        {show ? (
+          <Alert key="success" variant="success">
+            Submitted successfully.
+          </Alert>
+        ) : (
+          <></>
+        )}
       </Container>
     </>
   );

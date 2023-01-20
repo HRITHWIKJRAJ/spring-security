@@ -9,16 +9,24 @@ const Dashboard = () => {
   const user = useUser();
   const navigate = useNavigate();
   const [assignments, setAssignments] = useState(null);
+  const [assignmentEnums, setAssignmentEnums] = useState([]);
   useEffect(() => {
-    sendRequest("/api/assignments", "GET", user.jwt).then((assignmentData) => {
-      setAssignments(assignmentData);
-    });
+    sendRequest("/api/assignments", "GET", user.jwt).then(
+      (assignmentResponse) => {
+        setAssignments(assignmentResponse.assignments);
+        setAssignmentEnums(assignmentResponse.assignmentEnums);
+      }
+    );
   }, []);
 
   function createAssignment() {
-    sendRequest("api/assignments", "POST", user.jwt).then((assignment) => {
-      navigate(`/assignments/${assignment.id}`);
-    });
+    if (assignments.length < assignmentEnums.length) {
+      sendRequest("api/assignments", "POST", user.jwt).then((assignment) => {
+        navigate(`/assignments/${assignment.id}`);
+      });
+    } else {
+      alert("Max Assignment Limit Reached");
+    }
   }
 
   return (
@@ -45,15 +53,20 @@ const Dashboard = () => {
       {assignments ? (
         <div
           className="d-grid gap-5"
-          style={{ gridTemplateColumns: "repeat(auto-fit, 18rem)" }}
+          style={{ gridTemplateColumns: "repeat(auto-fit, 15rem)" }}
         >
           {assignments.map((assignment) => (
             <Card
               key={assignment.id}
-              style={{ width: "18rem", height: "18rem" }}
+              style={{ width: "15rem", height: "15rem" }}
             >
               <Card.Body className="d-flex flex-column justify-content-around">
-                <Card.Title>Assignment #{assignment.id}</Card.Title>
+                <Card.Title>Assignment #{assignment.number}</Card.Title>
+                <Card.Subtitle>
+                  {assignmentEnums.length > 0
+                    ? assignmentEnums[assignment.number - 1].assignmentName
+                    : ""}
+                </Card.Subtitle>
                 <div className="d-flex align-items-start">
                   <StatusBadge text={assignment.status} />
                 </div>

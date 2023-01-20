@@ -20,10 +20,11 @@ function sendRequest(url, requestMethod, jwt, requestBody) {
       } else {
         return response.text();
       }
-    } else if (response.status === 401) {
-      window.location.href = "/";
-      localStorage.setItem("jwt", null);
     }
+    // else if (response.status === 401) {
+    //   window.location.href = "/";
+    //   localStorage.setItem("jwt", null);
+    // }
   });
 }
 
